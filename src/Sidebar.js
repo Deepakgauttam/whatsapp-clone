@@ -7,9 +7,11 @@ import "./css/sidebar.css";
 import React, { useState, useEffect } from "react";
 import SidebarChat from "./SidebarChat";
 import db from "./firebase.js";
-
+import {useStateValue} from './StateProvider';
+import firebase from "firebase/compat/app";
 function Sidebar() {
   const [rooms, setRooms] = useState([]);
+  const[{user}, dispatch]=useStateValue();
   useEffect(() => {
     db.collection("rooms").onSnapshot((snapshot) => {
       setRooms(
@@ -24,7 +26,7 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebar_header">
-        <Avatar />
+        <Avatar src={user.photoURL} onClick={e=>firebase.auth().signOut()}/>
         <div className="sidebar_headerRight">
           <IconButton>
             <DonutLargeIcon />
